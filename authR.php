@@ -1,4 +1,5 @@
 <?php 
+session_start();
 $con = mysqli_connect ("localhost","root","","connectin");
 if (mysqli_connect_errno())
 {
@@ -22,16 +23,23 @@ $error_array=array();
 	$fname = strip_tags($_POST['fname']); //removing html tags
 	$fname = str_replace('','',$fname); // space removal
 	$fname = ucfirst(strtolower($fname)); //uppercase 
+	$_SESSION['fname']=$fname;
 
 	$lname = strip_tags($_POST['lname']);
 	$lname = str_replace('','', $lname);
 	$lname = ucfirst(strtolower ($lname));
+	$_SESSION['lname']=$lname;
 
 	$phone = strip_tags($_POST['phone']);
 	$phone = str_replace('','',$phone);
+	$_SESSION['phone']=$phone;
+
+	$gender = $_POST['gender'];
+    $_SESSION['gender']=$gender;
 
 	$email = strip_tags($_POST['email']);
 	$email = str_replace('','',$email);
+	$_SESSION['email']=$email;
 
 	$password = strip_tags($_POST['pass']);
 	$password = str_replace('','',$pass);
@@ -110,30 +118,57 @@ $error_array=array();
   <!-- fieldsets -->
   <fieldset>
     <h2 class="fs-title">Create account</h2>
-    <h3 class="fs-subtitle">This is step 1</h3>
-    <input type="text" name="fname" placeholder="First Name" required/>
-    <input type="text" name="lname" placeholder="Last Name" required />
-    <input type="text" name="phone" placeholder="Phone" required />
+    <h3 class="fs-subtitle">Please fill up the form</h3>
+
+    <input type="text" name="fname" placeholder="First Name" value="<?php 
+		if(isset($_SESSION['fname'])){
+			echo $_SESSION['fname'];
+		} ?>" required/>
+
+    <input type="text" name="lname" placeholder="Last Name" value="<?php 
+		if(isset($_SESSION['lname'])){
+			echo $_SESSION['lname'];
+		} ?>" required />
+
+    <input type="text" name="phone" placeholder="Phone" value="<?php 
+		if (isset($_SESSION['phone'])){
+			echo $_SESSION['phone'];
+		} ?>" required />
+
     <input type="button" name="next" class="next action-button" value="Next" />
   </fieldset>
+
   <fieldset>
     <h2 class="fs-title">Personal Details</h2>
-    <h3 class="fs-subtitle">We will never sell it</h3>
-    <select style="color: white" name = "gender" required>
+    <h3 class="fs-subtitle">Your presence on the social network</h3>
+
+    <select style="color: white" name = "gender" value="<?php 
+		if(isset($_SESSION['gender'])){
+			echo $_SESSION['gender'];
+		} ?>" required>
         <option selected disabled>Select</option>
         <option value="Male">Male</option>
         <option value="Female">Female</option>
     </select>
-    <input style="color: white" type="date" required >
+
+    <input style="color: white" type="date" value="<?php 
+		if(isset($_SESSION['date'])){
+			echo $_SESSION['date'];
+		} ?>" required >
+
     <input type="button" name="previous" class="previous action-button" value="Previous" />
     <input type="button" name="next" class="next action-button" value="Next" />
    
   </fieldset>
+
   <fieldset>
     <h2 class="fs-title">Personal Details</h2>
     <h3 class="fs-subtitle">We will never sell it</h3>
  
-    <input type="email" name="email" placeholder="Email" required />
+    <input type="email" name="email" placeholder="Email" value="<?php 
+		if(isset($_SESSION['email'])){
+			echo $_SESSION['email'];
+		} ?>" required />
     <input type="password" name="pass" placeholder="Password" required />
     <input type="password" name="cpass" placeholder="Confirm Password"  required/>
     <input type="button" name="previous" class="previous action-button" value="Previous" />
@@ -160,7 +195,6 @@ html {
 	
 	/*background = gradient + image pattern combo*/
 	background: url('images/authR4.jpg') no-repeat center;
-
     background-size: cover;
 }
 
