@@ -42,10 +42,10 @@ $error_array=array();
 	$_SESSION['email']=$email;
 
 	$password = strip_tags($_POST['pass']);
-	$password = str_replace('','',$pass);
+	$password = str_replace('','',$password);
 
 	$conpassword = strip_tags($_POST['cpass']);
-	$conpassword = str_replace('','',$cpass);
+	$conpassword = str_replace('','',$conpassword);
 	$date= date("Y-m-d");
 
 	//checking duplicate mails
@@ -54,33 +54,33 @@ $error_array=array();
 		$num_rows = mysqli_num_rows($e_check);
 
 		if ($num_rows > 0){
-			array_push($error_array, "Email already in use");
+			array_push($error_array, "Email already in use<br>");
 		}
 		else {
-			array_push($error_array,"Emails don't match");
+			array_push($error_array,"Emails don't match<br>");
 		}
 
 	//name conditions
 
 		if(strlen($fname)> 25 || strlen($fname)<2){
-			array_push($error_array,"Your first name should be between 2 and 25 characters");
+			array_push($error_array,"Your first name should be between 2 and 25 characters<br>");
 		}
 		if (strlen($lname)> 25 || strlen($lname)< 2) {
-			array_push($error_array, "Your first name should be between 2 and 25 characters");
+			array_push($error_array, "Your last name should be between 2 and 25 characters<br>");
 		}
 
 	//password conditons
 		if($password != $conpassword){
-			array_push($error_array, "Your passwrod don't match");
+			array_push($error_array, "Your passwrod don't match<br>");
 		}
 		else {
 			if(preg_match ('/[^A-Za-z0-9]/',$password)){
-				array_push($error_array,"Your password can only contains english characters or numbers");
+				array_push($error_array,"Your password can only contains english characters or numbers<br>");
 		       }
 		     }
     // paswrod limit
 		if(strlen($password) >30 || strlen($password)<5){
-			array_push($error_array, "Your passwrod must be betweem 5 and 30 characters");
+			array_push($error_array, "Your passwrod must be betweem 5 and 30 characters<br>");
 		}
 	}
 
@@ -124,16 +124,22 @@ $error_array=array();
 		if(isset($_SESSION['fname'])){
 			echo $_SESSION['fname'];
 		} ?>" required/>
+		<br>
+		<?php if (in_array("Your first name should be between 2 and 25 characters<br>",$error_array)) echo "Your first name should be between 2 and 25 characters<br>"; ?>
 
     <input type="text" name="lname" placeholder="Last Name" value="<?php 
 		if(isset($_SESSION['lname'])){
 			echo $_SESSION['lname'];
 		} ?>" required />
+		<br>
+		<?php if (in_array("Your last name should be between 2 and 25 characters<br>",$error_array)) echo "Your last name should be between 2 and 25 characters<br>"; ?>
 
     <input type="text" name="phone" placeholder="Phone" value="<?php 
 		if (isset($_SESSION['phone'])){
 			echo $_SESSION['phone'];
 		} ?>" required />
+		<br>
+		<!-- <?php if (in_array("Please enter a valid phone number<br>",$error_array)) echo "Please enter a valid phone number<br>"; ?> -->
 
     <input type="button" name="next" class="next action-button" value="Next" />
   </fieldset>
@@ -171,6 +177,12 @@ $error_array=array();
 		} ?>" required />
     <input type="password" name="pass" placeholder="Password" required />
     <input type="password" name="cpass" placeholder="Confirm Password"  required/>
+	<br>
+	<?php if (in_array("Your passwrod don't match<br>",$error_array)) echo "Your passwrod don't match<br>"; 
+	      else if (in_array("Your password can only contains english characters or numbers<br>",$error_array)) echo "Your password can only contains english characters or numbers<br>";
+		  else if (in_array("Your passwrod must be betweem 5 and 30 characters<br>",$error_array)) echo "Your passwrod must be betweem 5 and 30 characters<br>";
+	
+	?>
     <input type="button" name="previous" class="previous action-button" value="Previous" />
     <input type="submit" name="reg_submit" class="submit action-button" value="Submit" />
   </fieldset>
