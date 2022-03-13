@@ -92,7 +92,7 @@ $error_array=array();
 	// $stmt->close();
 	// $con->close();
 	// header("location:authR.php");
-
+    session_destroy();
 ?>
 
 <!DOCTYPE html>
