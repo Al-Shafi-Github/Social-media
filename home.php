@@ -1,3 +1,13 @@
+<?php 
+
+require 'config/config.php';
+require 'includes/form_handlers/register_handler.php';
+require 'includes/form_handlers/login_handler.php';
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,16 +50,24 @@
 <!-- for login -->
   <div class="login-box">
   <h2>𝐋𝐨𝐠𝐢𝐧</h2>
-  <form action="authR.php" method="post">
+  <form action="index.php" method="post">
     <div class="user-box">
-      <input type="text" name="Username" required>
+      <input type="text" name="email"value="<?php 
+		if(isset($_SESSION['email'])){
+			echo $_SESSION['email'];
+		} ?>" required />
       <label>Username</label>
     </div>
     <div class="user-box">
       <input type="password" name="password" required>
       <label>Password</label>
     </div>
-    <a href="#">
+
+    <?php if(in_array("Email or password was incorrect<br>", $error_array)) echo  "Email or password was incorrect<br>"; ?>
+		<input type="submit" name="login_button" value="Login">
+		<br>
+
+    <a href="#" name="login_button">
       <span></span>
       <span></span>
       <span></span>
@@ -67,6 +85,7 @@
        Sign UP
     </a> 
     </p>
+    
   
     
   </form>
