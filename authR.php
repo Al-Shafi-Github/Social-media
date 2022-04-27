@@ -13,7 +13,7 @@ $lname="";
 $email="";
 $password="";
 $conpassword="";
-$date="";
+$age=" ";
 $phone="";
 $gender="";
 $error_array=array();
@@ -37,6 +37,13 @@ $error_array=array();
 	$gender = $_POST['gender'];
     $_SESSION['gender']=$gender;
 
+	$dateofbirth =$_POST['dateofbirth'];
+    $currentDate = date("m/d/y");
+    $calc = date_diff(date_create($dateofbirth),date_create($currentDate));
+    $age = $calc ->format("%y");
+	
+
+
 	$email = strip_tags($_POST['email']);
 	$email = str_replace('','',$email);
 	$_SESSION['email']=$email;
@@ -46,7 +53,7 @@ $error_array=array();
 
 	$conpassword = strip_tags($_POST['cpass']);
 	$conpassword = str_replace('','',$conpassword);
-	$date= date("Y-m-d");
+	
 
 	//checking duplicate mails
 	$e_check = mysqli_query ($con, "SELECT email FROM authr WHERE email='$email'");
@@ -74,9 +81,9 @@ $error_array=array();
 				   if(strlen($password) >30 || strlen($password)<5){
 					array_push($error_array, "Your passwrod must be betweem 5 and 30 characters <br>");
 				}else{
-					$stmt = $con->prepare("INSERT INTO authr(fname,lname,email,password,date,phone,gender)
+					$stmt = $con->prepare("INSERT INTO authr(fname,lname,email,password,age,phone,gender)
 					values(?,?,?,?,?,?,?)");
-					$stmt->bind_param("sssssis",$fname,$lname,$email,$password,$date,$phone,$gender);
+					$stmt->bind_param("ssssiis",$fname,$lname,$email,$password,$age,$phone,$gender);
 					$stmt->execute();
 					echo "Registered Succesfull";
 					$stmt->close();
@@ -158,9 +165,9 @@ $error_array=array();
         <option value="Female">Female</option>
     </select>
 
-    <input style="color: white" type="date" value="<?php 
-		if(isset($_SESSION['date'])){
-			echo $_SESSION['date'];
+    <input style="color: white" name = "dateofbirth" type="date" value="<?php 
+		if(isset($_SESSION['dateofbirth'])){
+			echo $_SESSION['dateofbirth'];
 		} ?>" required >
 
     <input type="button" name="previous" class="previous action-button" value="Previous" />
@@ -188,6 +195,8 @@ $error_array=array();
     <input type="submit" name="reg_submit" class="submit action-button" value="Submit" />
   </fieldset>
 </form>
+
+
 </div>
 
 <script src="Js/authR.js"> </script>
